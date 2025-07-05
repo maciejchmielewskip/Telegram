@@ -271,6 +271,8 @@ import org.telegram.ui.Components.voip.VoIPHelper;
 import org.telegram.ui.Gifts.GiftSheet;
 import org.telegram.ui.Stars.BotStarsActivity;
 import org.telegram.ui.Stars.BotStarsController;
+import org.telegram.ui.Stars.GiftView;
+import org.telegram.ui.Stars.GiftsViews;
 import org.telegram.ui.Stars.ProfileGiftsView;
 import org.telegram.ui.Stars.StarGiftPatterns;
 import org.telegram.ui.Stars.StarGiftSheet;
@@ -380,6 +382,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private int avatarColor;
     TimerDrawable autoDeleteItemDrawable;
     private ProfileStoriesView storyView;
+    public GiftsViews giftsViews;
     public ProfileGiftsView giftsView;
 
     private View scrimView = null;
@@ -2929,6 +2932,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         }
                         if (giftsView != null) {
                             giftsView.setExpandProgress(1f);
+                            giftsViews.setExpandProgress(1f);
                         }
                         expandPhoto = false;
                         updateCollectibleHint();
@@ -5231,7 +5235,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
         avatarContainer2.addView(storyView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
         giftsView = new ProfileGiftsView(context, currentAccount, getDialogId(), avatarContainer, avatarImage, resourcesProvider);
-        avatarContainer2.addView(giftsView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+        giftsViews = new GiftsViews(context, currentAccount, getDialogId(), avatarContainer, avatarImage, resourcesProvider);
+//        avatarContainer2.addView(giftsView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
         updateProfileData(true);
 
         writeButton = new RLottieImageView(context);
@@ -5493,11 +5498,24 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         });
 
 
-        avatarImage.setVisibility(View.INVISIBLE);
-        profileView.rootFrame.addView(avatarImage);
-//        return profileView;
+//        avatarImage.setVisibility(View.INVISIBLE);
+//        profileView.rootFrame.addView(avatarImage);
+//        GiftView giftView = new GiftView(context, currentAccount, getDialogId(), resourcesProvider);
+        GiftView giftView = giftsViews.giftViews.get(0);
+//        View giftView = new View(context);
+        giftView.setBackgroundColor(Color.RED);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                600,  // or whatever size you want
+                600
+        );
+        giftView.setLayoutParams(params);
+        profileView.rootFrame.addView(giftView);
+        giftView.update();
 
-        return fragmentView;
+
+        return profileView;
+
+//        return fragmentView;
     }
 
     public interface AvatarBitmapHandler {
@@ -5756,6 +5774,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
         if (giftsView != null) {
             giftsView.setExpandProgress(value);
+            giftsViews.setExpandProgress(value);
         }
         if (searchItem != null) {
             searchItem.setAlpha(1.0f - value);
@@ -6922,6 +6941,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
             if (giftsView != null) {
                 giftsView.setActionBarActionMode(value);
+                giftsViews.setActionBarActionMode(value);
             }
             topView.invalidate();
 
@@ -7406,6 +7426,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     giftsView.setExpandCoords(avatarContainer2.getMeasuredWidth() - AndroidUtilities.dp(40), writeButtonVisible, (actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0) + ActionBar.getCurrentActionBarHeight() + extraHeight + searchTransitionOffset);
+                    giftsViews.setExpandCoords(avatarContainer2.getMeasuredWidth() - AndroidUtilities.dp(40), writeButtonVisible, (actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0) + ActionBar.getCurrentActionBarHeight() + extraHeight + searchTransitionOffset);
                 }
             }
 
@@ -7421,6 +7442,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     giftsView.invalidate();
+                    giftsViews.invalidate();
                 }
 
                 final float durationFactor = Math.min(AndroidUtilities.dpf2(2000f), Math.max(AndroidUtilities.dpf2(1100f), Math.abs(listViewVelocityY))) / AndroidUtilities.dpf2(1100f);
@@ -7586,6 +7608,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     giftsView.setExpandProgress(1f);
+                    giftsViews.setExpandProgress(1f);
                 }
 
                 avatarImage.setRoundRadius((int) AndroidUtilities.lerp(getSmallAvatarRoundRadius(), 0f, avatarAnimationProgress));
@@ -7633,6 +7656,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     giftsView.invalidate();
+                    giftsViews.invalidate();
                 }
                 float nameScale = 1.0f + 0.12f * diff;
                 if (expandAnimator == null || !expandAnimator.isRunning()) {
@@ -7977,6 +8001,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     giftsView.update();
+                    giftsViews.update();
                 }
                 if (avatarImage != null) {
                     avatarImage.setHasStories(needInsetForStories());
@@ -8024,6 +8049,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     giftsView.update();
+                    giftsViews.update();
                 }
                 if (avatarImage != null) {
                     avatarImage.setHasStories(needInsetForStories());
@@ -8049,6 +8075,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     giftsView.update();
+                    giftsViews.update();
                 }
                 if (avatarImage != null) {
                     avatarImage.setHasStories(needInsetForStories());
@@ -8578,6 +8605,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
             if (giftsView != null) {
                 giftsView.setProgressToStoriesInsets(avatarAnimationProgress);
+                giftsViews.setProgressToStoriesInsets(avatarAnimationProgress);
             }
         }
     }
@@ -8691,7 +8719,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     giftsView.setAlpha(0f);
-                    animators.add(ObjectAnimator.ofFloat(giftsView, View.ALPHA, 1.0f));
+                    giftsViews.setAlpha(0);
+                    animators.add(ObjectAnimator.ofFloat(giftsView, View.ALPHA, 0.0f));
+                    giftsViews.animateAlpha(animators, 1.0f);
                 }
                 if (timeItem.getTag() != null) {
                     animators.add(ObjectAnimator.ofFloat(timeItem, View.ALPHA, 1.0f, 0.0f));
@@ -8779,6 +8809,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (giftsView != null) {
                     animators.add(ObjectAnimator.ofFloat(giftsView, View.ALPHA, 0.0f));
+                    giftsViews.animateAlpha(animators, 0.0f);
                 }
                 if (timeItem.getTag() != null) {
                     timeItem.setAlpha(0f);
@@ -8962,6 +8993,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
         if (giftsView != null) {
             giftsView.update();
+            giftsViews.update();
         }
         if (avatarImage != null) {
             avatarImage.setHasStories(needInsetForStories());
@@ -8987,6 +9019,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
         if (giftsView != null) {
             giftsView.update();
+            giftsViews.update();
         }
         if (avatarImage != null) {
             avatarImage.setHasStories(needInsetForStories());
@@ -10451,6 +10484,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
         if (giftsView != null) {
             giftsView.update();
+            giftsViews.update();
         }
     }
 
@@ -11089,6 +11123,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
         if (giftsView != null) {
             giftsView.setAlpha(1f);
+            giftsViews.setAlpha(1f);
         }
         nameTextView[1].setAlpha(1f);
         onlineTextView[1].setAlpha(1f);
@@ -14048,6 +14083,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
         if (giftsView != null) {
             giftsView.setBounds(aleft, aright, atop + (actionBar.getHeight() - atop) / 2f, !animated);
+            giftsViews.setBounds(aleft, aright, atop + (actionBar.getHeight() - atop) / 2f, !animated);
         }
     }
 
