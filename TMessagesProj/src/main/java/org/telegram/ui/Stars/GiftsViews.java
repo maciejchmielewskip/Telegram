@@ -16,12 +16,12 @@ public class GiftsViews {
     public final List<GiftView> giftViews = new ArrayList<>(6);
 
     public GiftsViews(Context context, int currentAccount, long dialogId, FrameLayout avatarContainer, ProfileActivity.AvatarImageView avatarImage, Theme.ResourcesProvider resourcesProvider) {
-        giftViews.add(new GiftView(context, currentAccount, dialogId, resourcesProvider));
-        giftViews.add(new GiftView(context, currentAccount, dialogId, resourcesProvider));
-        giftViews.add(new GiftView(context, currentAccount, dialogId, resourcesProvider));
-        giftViews.add(new GiftView(context, currentAccount, dialogId, resourcesProvider));
-        giftViews.add(new GiftView(context, currentAccount, dialogId, resourcesProvider));
-        giftViews.add(new GiftView(context, currentAccount, dialogId, resourcesProvider));
+        giftViews.add(new GiftView(context, 0, currentAccount, dialogId, resourcesProvider));
+        giftViews.add(new GiftView(context, 1, currentAccount, dialogId, resourcesProvider));
+        giftViews.add(new GiftView(context, 2, currentAccount, dialogId, resourcesProvider));
+        giftViews.add(new GiftView(context, 3, currentAccount, dialogId, resourcesProvider));
+        giftViews.add(new GiftView(context, 4, currentAccount, dialogId, resourcesProvider));
+        giftViews.add(new GiftView(context, 5, currentAccount, dialogId, resourcesProvider));
     }
 
     public void setExpandProgress(float v) {

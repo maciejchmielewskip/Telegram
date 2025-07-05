@@ -38,13 +38,15 @@ import java.util.HashSet;
 
 public class GiftView extends View implements NotificationCenter.NotificationCenterDelegate {
 
+    private final int i;
     private final int currentAccount;
     private final long dialogId;
     private final Theme.ResourcesProvider resourcesProvider;
 
-    public GiftView(Context context, int currentAccount, long dialogId, Theme.ResourcesProvider resourcesProvider) {
+    public GiftView(Context context, int i, int currentAccount, long dialogId, Theme.ResourcesProvider resourcesProvider) {
         super(context);
 
+        this.i = i;
         this.currentAccount = currentAccount;
         this.dialogId = dialogId;
 
@@ -336,7 +338,8 @@ public class GiftView extends View implements NotificationCenter.NotificationCen
 
         final float closedAlpha = Utilities.clamp01((float) (expandY - (AndroidUtilities.statusBarHeight + ActionBar.getCurrentActionBarHeight())) / dp(50));
 
-        for (int i = 0; i < gifts.size(); ++i) {
+
+        if (gifts != null && i >= 0 && i < gifts.size()) {
             final Gift gift = gifts.get(i);
             final float alpha = gift.animatedFloat.set(1.0f);
             final float scale = lerp(0.5f, 1.0f, alpha);
@@ -349,80 +352,8 @@ public class GiftView extends View implements NotificationCenter.NotificationCen
                     1,
                     1
             );
-//            if (index == 0) {
-//                gift.draw(
-//                        canvas,
-//                        (float) (acx + ar * Math.cos(-65 / 180.0f * Math.PI)),
-//                        (float) (acy + ar * Math.sin(-65 / 180.0f * Math.PI)),
-//                        scale, -65 + 90,
-//                        alpha * (1.0f - expandProgress), lerp(0.9f, 0.25f, actionBarProgress)
-//                );
-//            } else if (index == 1) {
-//                gift.draw(
-//                        canvas,
-//                        lerp(cacx + Math.min(getWidth() * .27f, dp(62)), cx, 0.5f * actionBarProgress), acy - dp(52),
-//                        scale, -4.0f,
-//                        alpha * alpha * (1.0f - expandProgress) * (1.0f - actionBarProgress) * (closedAlpha),
-//                        1.0f
-//                );
-//            } else if (index == 2) {
-//                gift.draw(
-//                        canvas,
-//                        lerp(cacx + Math.min(getWidth() * .46f, dp(105)), cx, 0.5f * actionBarProgress), acy - dp(72),
-//                        scale, 8.0f,
-//                        alpha * (1.0f - expandProgress) * (1.0f - actionBarProgress) * (closedAlpha),
-//                        1.0f
-//                );
-//            } else if (index == 3) {
-//                gift.draw(
-//                        canvas,
-//                        lerp(cacx + Math.min(getWidth() * .60f, dp(136)), cx, 0.5f * actionBarProgress), acy - dp(46),
-//                        scale, 3.0f,
-//                        alpha * (1.0f - expandProgress) * (1.0f - actionBarProgress) * (closedAlpha),
-//                        1.0f
-//                );
-//            } else if (index == 4) {
-//                gift.draw(
-//                        canvas,
-//                        lerp(cacx + Math.min(getWidth() * .08f, dp(21.6f)), cx, 0.5f * actionBarProgress), acy - dp(82f),
-//                        scale, -3.0f,
-//                        alpha * (1.0f - expandProgress) * (1.0f - actionBarProgress) * (closedAlpha),
-//                        1.0f
-//                );
-//            } else if (index == 5) {
-//                gift.draw(
-//                        canvas,
-//                        lerp(cacx + Math.min(getWidth() * .745f, dp(186)), cx, 0.5f * actionBarProgress), acy - dp(39),
-//                        scale, 2.0f,
-//                        alpha * (1.0f - expandProgress) * (1.0f - actionBarProgress) * (closedAlpha),
-//                        1.0f
-//                );
-//            } else if (index == 6) {
-//                gift.draw(
-//                        canvas,
-//                        cacx + Math.min(getWidth() * .38f, dp(102)), expandY - dp(12),
-//                        scale, 0,
-//                        alpha * (1.0f - expandProgress) * (1.0f - actionBarProgress) * (closedAlpha),
-//                        1.0f
-//                );
-//            } else if (index == 7) {
-//                gift.draw(
-//                        canvas,
-//                        cacx + Math.min(getWidth() * .135f, dp(36)), expandY - dp(17.6f),
-//                        scale, -5.0f,
-//                        alpha * (1.0f - expandProgress) * (1.0f - actionBarProgress) * (closedAlpha),
-//                        1.0f
-//                );
-//            } else if (index == 8) {
-//                gift.draw(
-//                        canvas,
-//                        cacx + Math.min(getWidth() * .76f, dp(178)), expandY - dp(21.66f),
-//                        scale, 5.0f,
-//                        alpha * (1.0f - expandProgress) * (1.0f - actionBarProgress) * (closedAlpha),
-//                        1.0f
-//                );
-//            }
         }
+
 
         canvas.restore();
     }
