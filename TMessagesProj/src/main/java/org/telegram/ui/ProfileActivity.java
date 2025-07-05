@@ -76,6 +76,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.util.Property;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
@@ -292,6 +293,7 @@ import org.telegram.ui.bots.BotWebViewAttachedSheet;
 import org.telegram.ui.bots.ChannelAffiliateProgramsFragment;
 import org.telegram.ui.bots.SetupEmojiStatusSheet;
 import org.telegram.ui.profileScreen.ProfileView;
+import org.telegram.ui.profileScreen.ProfileViewModel;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -784,6 +786,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private SpannableStringBuilder bottomButtonPostText;
     private ButtonWithCounterView[] bottomButton;
     private Runnable applyBulletin;
+    private ImageLocation qqqImageLocation;
+    private ImageLocation qqqThumbLocation;
 
     public static ProfileActivity of(long dialogId) {
         Bundle bundle = new Bundle();
@@ -2081,6 +2085,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
     @Override
     public void onFragmentDestroy() {
+        ImageReceiver. BitmapHolder bitmap = avatarImage.getImageReceiver().getBitmapSafe();
         super.onFragmentDestroy();
         if (sharedMediaLayout != null) {
             sharedMediaLayout.onDestroy();
@@ -4935,7 +4940,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         avatarImage.setRoundRadius(getSmallAvatarRoundRadius());
         avatarImage.setPivotX(0);
         avatarImage.setPivotY(0);
-        avatarContainer.addView(avatarImage, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
+//        avatarContainer.addView(avatarImage, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
         avatarImage.setOnClickListener(v -> {
             if (avatarBig != null) {
                 return;
@@ -5438,11 +5443,81 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         if (openGifts || openCommonChats) {
             AndroidUtilities.runOnUIThread(this::scrollToSharedMedia);
         }
+        long userId = arguments.getLong("user_id", 0);
+        TLRPC.User user = getMessagesController().getUser(userId);
+        TLRPC.ChatFull chatFull = getMessagesController().getChatFull(chatId);
+        TLRPC.Chat chat = getMessagesController().getChat(chatId);
+        String username = ChatObject.getPublicUsername(chat);
+        String chatName = chat.title;
+        CharSequence subtitle = onlineTextView[0].getText();
+        CharSequence title = nameTextView[0].getText();
+
+//        avatarImage.setImage(videoThumbLocation, "avatar", thumbLocation, "50_50", avatarDrawable, user);
+
+//        TLRPC.PhotoSize smallSize = FileLoader.getClosestPhotoSizeWithSize(getUserInfo().fallback_photo.sizes, 1000);
+//        avatar = smallSize.location;
+////        avatarBig = bigSize.location;
+//        avatarImage.setImage(ImageLocation.getForLocal(avatar), "50_50", avatarDrawable, null);
+//
+//        avatarImage.getImageReceiver().setImage(qqqImageLocation, "avatar", qqqThumbLocation, "50_50", avatarDrawable, chat);
+//        ImageReceiver. BitmapHolder bitmap = avatarImage.getImageReceiver().getBitmapSafe();
+//        Drawable bitmap2 = avatarImage.getImageReceiver().currentMediaDrawable;
 
         ProfileView profileView = new ProfileView(context);
+
+//        final boolean[] didSetSmallAvatar = {false};
+//        avatarImage.getImageReceiver().setDelegate((imageReceiver1, set, thumb, memCache) -> {
+//            if (didSetSmallAvatar[0]) {
+//                return;
+//            }
+//            ImageReceiver. BitmapHolder bitmap = avatarImage.getImageReceiver().getBitmapSafe();
+//            if (bitmap == null) {
+//                return;
+//            }
+//            Drawable bitmap2 = avatarImage.getImageReceiver().currentMediaDrawable;
+//            Log.d("xdd", "asdasd");
+//            profileView.updateSmallAvatarBitmap(bitmap.bitmap);
+////            profileView.updateBigAvatarBitmap(bitmap.bitmap);
+//            didSetSmallAvatar[0] = true;
+//        });
+
+//        ProfileViewModel profileViewModel = new ProfileViewModel(chat.title);
+
+
+        TLObject entity = userId == 0 ? chat : user;
+        getBitmapFromImageLocation(entity, ImageLocation.TYPE_BIG, bitmap -> {
+            profileView.updateBigAvatarBitmap(bitmap.bitmap);
+        });
+        getBitmapFromImageLocation(entity, ImageLocation.TYPE_SMALL, bitmap -> {
+            profileView.updateSmallAvatarBitmap(bitmap.bitmap);
+        });
+
+
+        avatarImage.setVisibility(View.INVISIBLE);
+        profileView.rootFrame.addView(avatarImage);
         return profileView;
 
 //        return fragmentView;
+    }
+
+    public interface AvatarBitmapHandler {
+        void onLoaded(ImageReceiver.BitmapHolder bitmap);
+    }
+
+    public void getBitmapFromImageLocation(TLObject entity, int size, AvatarBitmapHandler handler) {
+        if (entity != null) {
+            ImageLocation imageLocation = ImageLocation.getForUserOrChat(entity, size);
+            if (imageLocation != null) {
+                ImageReceiver imageReceiver = new ImageReceiver();
+                imageReceiver.setDelegate((imageReceiver1, set, thumb, memCache) -> {
+                    ImageReceiver. BitmapHolder bitmap = imageReceiver.getBitmapSafe();
+                    if (bitmap != null) {
+                        handler.onLoaded(bitmap);
+                    }
+                });
+                imageReceiver.setImage(imageLocation, null, null, 0, null, null, 0);
+            }
+        }
     }
 
     private void updateBottomButtonY() {
@@ -10278,6 +10353,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 videoLocation = avatarsViewPager.getCurrentVideoLocation(thumbLocation, imageLocation);
             }
 
+            this.qqqImageLocation = imageLocation;
+            this.qqqThumbLocation = thumbLocation;
             boolean initied = avatarsViewPager.initIfEmpty(null, imageLocation, thumbLocation, reload);
             if ((imageLocation == null || initied) && isPulledDown) {
                 final View view = layoutManager.findViewByPosition(0);

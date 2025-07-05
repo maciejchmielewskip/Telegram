@@ -275,7 +275,7 @@ public class ImageReceiver implements NotificationCenter.NotificationCenterDeleg
     private String currentMediaFilter;
     private String currentMediaKey;
     private int mediaTag;
-    private Drawable currentMediaDrawable;
+    public Drawable currentMediaDrawable;
     private BitmapShader mediaShader;
 
     private boolean useRoundForThumb = true;

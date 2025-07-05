@@ -1,6 +1,7 @@
 package org.telegram.ui.profileScreen;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Path;
 import android.view.Gravity;
@@ -11,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.FrameLayout;
 
-import org.telegram.messenger.R;
+//import org.telegram.messenger.R;
 
 public class ProfileView extends ScrollView {
     private PhysicsScroller scroller;
@@ -24,7 +25,7 @@ public class ProfileView extends ScrollView {
     private MaskedView maskedView;
     private TextsView textsView;
     private ExpandingAvatar expandingAvatar;
-    private FrameLayout rootFrame;
+    public FrameLayout rootFrame;
     private FrameLayout.LayoutParams buttonsLayout;
     private FrameLayout.LayoutParams textsLayout;
     private ButtonsLayout buttonsLayoutView;
@@ -117,6 +118,20 @@ public class ProfileView extends ScrollView {
         });
     }
 
+    public void updateSmallAvatarBitmap(Bitmap avatarBitmap) {
+        avatar.setImageBitmap(avatarBitmap);
+        if (headerGeometry.size != null) {
+            handleHeaderGeometryChange();
+        }
+    }
+
+    public void updateBigAvatarBitmap(Bitmap avatarBitmap) {
+        expandingAvatar.updateAvatar(avatarBitmap);
+        if (headerGeometry.size != null) {
+            handleHeaderGeometryChange();
+        }
+    }
+
     private void handleHeaderGeometryChange() {
         stampsController.handleHeaderGeometryChange(headerGeometry);
         giftsController.handleHeaderGeometryChange(headerGeometry);
@@ -149,7 +164,7 @@ public class ProfileView extends ScrollView {
         } else {
             textsLayout.topMargin = (int)(
                     Adjust.Header.regularTextsTop +
-                    Math.max(0, headerGeometry.scrollDownOffset - 320)
+                            Math.max(0, headerGeometry.scrollDownOffset - 320)
             );
         }
     }
@@ -203,7 +218,6 @@ public class ProfileView extends ScrollView {
         avatarParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
         avatarParams.topMargin = (int)(Adjust.Header.height * Adjust.Header.verticalCenterShift * 0.5) - (avatarSize / 2);
         avatar.setLayoutParams(avatarParams);
-        avatar.setImageResource(R.drawable.avatar);
         maskedView.addView(avatar);
     }
 
@@ -258,11 +272,7 @@ public class ProfileView extends ScrollView {
     }
 
     private void setupExpandableAvatar(Context context) {
-        expandingAvatar = new ExpandingAvatar(
-                context,
-                BitmapFactory.decodeResource(getResources(), R.drawable.avatar),
-                0, 0, Adjust.Avatar.size / 2, 0, 0, 100, 100
-        );
+        expandingAvatar = new ExpandingAvatar(context, 0, 0, Adjust.Avatar.size / 2, 0, 0, 100, 100);
         FrameLayout.LayoutParams rectParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT,

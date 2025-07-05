@@ -32,18 +32,18 @@ public class ExpandingAvatar extends View {
     private final float BLUR_RADIUS = 25f;
     private int blurAlpha = 0;
 
-    public ExpandingAvatar(Context context) {
+    public ExpandingAvatar(Context context, float midX, float midY, float radius, float rectX, float rectY, float rectW, float rectH) {
         super(context);
-    }
-
-    public ExpandingAvatar(Context context, Bitmap avatar, float midX, float midY, float radius, float rectX, float rectY, float rectW, float rectH) {
-        super(context);
-        this.avatarImage = avatar;
         this.circleMidX = midX;
         this.circleMidY = midY;
         this.circleRadius = radius;
         this.rectBounds.set(rectX, rectY, rectX + rectW, rectY + rectH);
+    }
+
+    public void updateAvatar(Bitmap avatar) {
+        this.avatarImage = avatar;
         updateBlurredAvatar();
+        invalidate();
     }
 
     public void setAvatarImage(Bitmap bmp) {
