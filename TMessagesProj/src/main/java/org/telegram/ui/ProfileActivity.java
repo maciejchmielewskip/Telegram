@@ -291,6 +291,7 @@ import org.telegram.ui.bots.BotLocation;
 import org.telegram.ui.bots.BotWebViewAttachedSheet;
 import org.telegram.ui.bots.ChannelAffiliateProgramsFragment;
 import org.telegram.ui.bots.SetupEmojiStatusSheet;
+import org.telegram.ui.profileScreen.ProfileView;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -5438,7 +5439,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             AndroidUtilities.runOnUIThread(this::scrollToSharedMedia);
         }
 
-        return fragmentView;
+        ProfileView profileView = new ProfileView(context);
+        return profileView;
+
+//        return fragmentView;
     }
 
     private void updateBottomButtonY() {
