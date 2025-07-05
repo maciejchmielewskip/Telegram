@@ -5495,9 +5495,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
         avatarImage.setVisibility(View.INVISIBLE);
         profileView.rootFrame.addView(avatarImage);
-        return profileView;
+//        return profileView;
 
-//        return fragmentView;
+        return fragmentView;
     }
 
     public interface AvatarBitmapHandler {

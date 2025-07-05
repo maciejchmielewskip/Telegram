@@ -18,8 +18,8 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
 
 public class ExpandingAvatar extends View {
-    private static final int blurHeight = 270;
-    private static final int blurFade = 180;
+    private static final float blurHeight = 270.0f / 1496.0f;
+    private static final float blurFade = 180.0f / 1496.0f;
 
     private Bitmap avatarImage;
     private float circleMidX, circleMidY, circleRadius;
@@ -82,8 +82,8 @@ public class ExpandingAvatar extends View {
         }
         int width = avatarImage.getWidth();
         int height = avatarImage.getHeight();
-        int blurSolidHeight = Math.min(blurHeight, height);
-        int fadeHeight = Math.min(blurFade, height - blurSolidHeight);
+        int blurSolidHeight = (int)Math.min((blurHeight * (float)height), (float)height);
+        int fadeHeight = (int)Math.min((blurFade * (float)height), (float)height - (float)blurSolidHeight);
         int totalBlurHeight = blurSolidHeight + fadeHeight;
         if (totalBlurHeight <= 0) {
             blurredFadeAvatar = avatarImage.copy(Bitmap.Config.ARGB_8888, true);
