@@ -20,7 +20,7 @@ public class ProfileView extends ScrollView {
     private Avatar avatar;
     private AvatarMetaball avatarMetaball;
     private StampsController stampsController;
-    private GiftsController giftsController;
+    public GiftsController giftsController;
     private HeaderGeometry headerGeometry = new HeaderGeometry();
     private MaskedView maskedView;
     private TextsView textsView;

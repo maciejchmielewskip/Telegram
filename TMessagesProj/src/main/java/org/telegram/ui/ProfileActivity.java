@@ -294,6 +294,7 @@ import org.telegram.ui.bots.BotLocation;
 import org.telegram.ui.bots.BotWebViewAttachedSheet;
 import org.telegram.ui.bots.ChannelAffiliateProgramsFragment;
 import org.telegram.ui.bots.SetupEmojiStatusSheet;
+import org.telegram.ui.profileScreen.Adjust;
 import org.telegram.ui.profileScreen.ProfileView;
 import org.telegram.ui.profileScreen.ProfileViewModel;
 
@@ -5501,16 +5502,16 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 //        avatarImage.setVisibility(View.INVISIBLE);
 //        profileView.rootFrame.addView(avatarImage);
 //        GiftView giftView = new GiftView(context, currentAccount, getDialogId(), resourcesProvider);
-        GiftView giftView = giftsViews.giftViews.get(0);
-//        View giftView = new View(context);
-        giftView.setBackgroundColor(Color.RED);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                600,  // or whatever size you want
-                600
-        );
-        giftView.setLayoutParams(params);
-        profileView.rootFrame.addView(giftView);
-        giftView.update();
+        for (int i = 0; i <= 5; i++) {
+            GiftView giftView = giftsViews.giftViews.get(i);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    dp(Adjust.Gift.size),
+                    dp(Adjust.Gift.size)
+            );
+            giftView.setLayoutParams(params);
+            profileView.giftsController.displayGift(giftView, i);
+            giftView.update();
+        }
 
 
         return profileView;

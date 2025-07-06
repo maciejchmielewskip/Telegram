@@ -1,10 +1,10 @@
 package org.telegram.ui.profileScreen;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
-import org.telegram.messenger.R;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ class Gift {
     }
 }
 
-class GiftsController {
+public class GiftsController {
     private static final CartesianCoordinates marginShift = new CartesianCoordinates(0, Adjust.Header.topMargin);
 
     static GiftsController make(Context context) {
@@ -43,12 +43,7 @@ class GiftsController {
             double radians = Math.atan2(y - cy, x - cx);
             double distance = Math.hypot(x - cx, y - cy);
             PolarCoordinates position = new PolarCoordinates((float)radians, (float)distance / 300);
-            ImageView view = new ImageView(context);
-            switch (i % 3) {
-                case 0: view.setImageResource(R.drawable.gift_1);break;
-                case 1: view.setImageResource(R.drawable.gift_2);break;
-                case 2: view.setImageResource(R.drawable.gift_3);break;
-            }
+            View view = new FrameLayout(context);
 
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Adjust.Gift.size, Adjust.Gift.size);
             view.setLayoutParams(params);
@@ -82,7 +77,7 @@ class GiftsController {
                 delay,
                 new TimingFunction.SpeedUp(3.5f),
                 TimingFunction.Bezier.easeIn
-            );
+        );
 
         for (Gift gift : gifts) {
             delay.delay = (gift.particle.position.length - 1.2f) * 0.2f;
@@ -98,5 +93,9 @@ class GiftsController {
             gift.viewOnSpring.moveSpring(position);
         }
     }
-}
 
+    public void displayGift(View giftView, int index) {
+        View baseView = gifts.get(index).viewOnSpring.view;
+        ((FrameLayout) baseView).addView(giftView);
+    }
+}
