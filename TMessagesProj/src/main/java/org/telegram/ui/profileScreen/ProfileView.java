@@ -19,7 +19,7 @@ public class ProfileView extends ScrollView {
     private GradientBackgroundView backgroundView;
     private Avatar avatar;
     private AvatarMetaball avatarMetaball;
-    private StampsController stampsController;
+    public StampsController stampsController;
     public GiftsController giftsController;
     private HeaderGeometry headerGeometry = new HeaderGeometry();
     private MaskedView maskedView;

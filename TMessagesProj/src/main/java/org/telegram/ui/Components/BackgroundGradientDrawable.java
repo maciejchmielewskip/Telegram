@@ -111,19 +111,20 @@ public class BackgroundGradientDrawable extends GradientDrawable {
 
     @Override
     public void draw(Canvas canvas) {
-        if (disposed) {
-            super.draw(canvas);
-            return;
-        }
-
-        final Rect bounds = getBounds();
-        final Bitmap bitmap = findBestBitmapForSize(bounds.width(), bounds.height());
-
-        if (bitmap != null) {
-            canvas.drawBitmap(bitmap, null, bounds, bitmapPaint);
-        } else {
-            super.draw(canvas);
-        }
+        super.draw(canvas);
+//        if (disposed) {
+//            super.draw(canvas);
+//            return;
+//        }
+//
+//        final Rect bounds = getBounds();
+//        final Bitmap bitmap = findBestBitmapForSize(bounds.width(), bounds.height());
+//
+//        if (bitmap != null) {
+//            canvas.drawBitmap(bitmap, null, bounds, bitmapPaint);
+//        } else {
+//            super.draw(canvas);
+//        }
     }
 
     public Disposable drawExactBoundsSize(Canvas canvas, View ownerView) {

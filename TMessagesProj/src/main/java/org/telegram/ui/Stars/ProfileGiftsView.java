@@ -194,24 +194,24 @@ public class ProfileGiftsView extends View implements NotificationCenter.Notific
             float alpha,
             float gradientAlpha
         ) {
-            if (alpha <= 0.0f) return;
-            final float gsz = dp(45);
-            bounds.set(cx - gsz / 2, cy - gsz / 2, cx + gsz / 2, cy + gsz / 2);
-            canvas.save();
-            canvas.translate(cx, cy);
-            canvas.rotate(rotate);
-            final float scale = ascale * bounce.getScale(0.1f);
-            canvas.scale(scale, scale);
-            if (gradientPaint != null) {
-                gradientPaint.setAlpha((int) (0xFF * alpha * gradientAlpha));
-                canvas.drawRect(-gsz / 2.0f, -gsz / 2.0f, gsz / 2.0f, gsz / 2.0f, gradientPaint);
-            }
-            if (emojiDrawable != null) {
-                final int sz = dp(24);
-                emojiDrawable.setBounds(-sz / 2, -sz / 2, sz / 2, sz / 2);
-                emojiDrawable.setAlpha((int) (0xFF * alpha));
-                emojiDrawable.draw(canvas);
-            }
+//            if (alpha <= 0.0f) return;
+//            final float gsz = dp(45);
+//            bounds.set(cx - gsz / 2, cy - gsz / 2, cx + gsz / 2, cy + gsz / 2);
+//            canvas.save();
+//            canvas.translate(cx, cy);
+//            canvas.rotate(rotate);
+//            final float scale = ascale * bounce.getScale(0.1f);
+//            canvas.scale(scale, scale);
+//            if (gradientPaint != null) {
+//                gradientPaint.setAlpha((int) (0xFF * alpha * gradientAlpha));
+//                canvas.drawRect(-gsz / 2.0f, -gsz / 2.0f, gsz / 2.0f, gsz / 2.0f, gradientPaint);
+//            }
+//            if (emojiDrawable != null) {
+//                final int sz = dp(24);
+//                emojiDrawable.setBounds(-sz / 2, -sz / 2, sz / 2, sz / 2);
+//                emojiDrawable.setAlpha((int) (0xFF * alpha));
+//                emojiDrawable.draw(canvas);
+//            }
             canvas.restore();
         }
     }

@@ -1,13 +1,16 @@
 package org.telegram.ui.profileScreen;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.dynamicanimation.animation.SpringForce;
 
-import org.telegram.messenger.R;
+//import org.telegram.messenger.R;
 
 import java.util.ArrayList;
 
@@ -21,7 +24,7 @@ class Stamp {
     }
 }
 
-class StampsController {
+public class StampsController {
     private static final CartesianCoordinates marginShift = new CartesianCoordinates(0, Adjust.Header.topMargin);
 
     static StampsController make(Context context) {
@@ -54,7 +57,8 @@ class StampsController {
             double distance = Math.hypot(x - 540, y - 304);
             PolarCoordinates position = new PolarCoordinates((float)radians, (float)distance / 300);
             ImageView imageView = new ImageView(context);
-            imageView.setImageResource(R.drawable.stamp);
+            imageView.setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
+
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Adjust.Stamp.size, Adjust.Stamp.size);
             imageView.setLayoutParams(params);
             stamps.add(new Stamp(
@@ -103,6 +107,12 @@ class StampsController {
             CartesianCoordinates cartesian = viewPosition.toCartesian();
             CartesianCoordinates position = cartesian.add(middle);
             stamp.viewOnSpring.moveSpring(position);
+        }
+    }
+
+    public void updateStampBitmap(Bitmap bitmap) {
+        for (Stamp stamp : stamps) {
+            ((ImageView)stamp.viewOnSpring.view).setImageBitmap(bitmap);
         }
     }
 }

@@ -1166,7 +1166,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     if (loadedScale > 0) {
                         canvas.save();
                         canvas.clipRect(0, 0, getMeasuredWidth(), y1);
-                        StarGiftPatterns.drawProfilePattern(canvas, emoji, getMeasuredWidth(), ((actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0) + dp(144)) - (1f - extraHeight / dp(88)) * dp(50), Math.min(1f, extraHeight / dp(88)), full);
+//                        emoji.
+//                        StarGiftPatterns.drawProfilePattern(canvas, emoji, getMeasuredWidth(), ((actionBar.getOccupyStatusBar() ? AndroidUtilities.statusBarHeight : 0) + dp(144)) - (1f - extraHeight / dp(88)) * dp(50), Math.min(1f, extraHeight / dp(88)), full);
                         canvas.restore();
                     }
                 }
@@ -1339,6 +1340,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
         @Override
         protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            if (true) {
+                return;
+            }
             for (int i = 0; i < 2; i++) {
                 if (pressedOverlayAlpha[i] > 0f) {
                     pressedOverlayGradient[i].setAlpha((int) (pressedOverlayAlpha[i] * 255));
@@ -5469,14 +5474,27 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 //        ImageReceiver. BitmapHolder bitmap = avatarImage.getImageReceiver().getBitmapSafe();
 //        Drawable bitmap2 = avatarImage.getImageReceiver().currentMediaDrawable;
 
+
+//        int color1 = peerColor.getBgColor1(Theme.isCurrentThemeDark());
+//        int color2 = peerColor.getBgColor2(Theme.isCurrentThemeDark());
+                int color1 = peerColor.getBgColor1(false);
+        int color2 = peerColor.getBgColor2(false);
         ProfileViewModel profileViewModel = new ProfileViewModel(
                 "title",
                 "subtitle",
-                peerColor.getColor2(),
-                peerColor.getColor1(),
-                peerColor.getColor3()
+                color2,
+                color2,
+                color1
         );
         ProfileView profileView = new ProfileView(context, profileViewModel);
+
+        AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable emoji = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(profileView, false, dp(20), AnimatedEmojiDrawable.CACHE_TYPE_ALERT_PREVIEW_STATIC);
+        emoji.set(ChatObject.getProfileEmojiId(chat), false);
+//        emoji.setColor(peerColor.getColor2(false));
+        emoji.setColor(Color.RED);
+        Bitmap patternBitmap = getBitmapFromDrawable(emoji.getDrawable(), 100, 100);
+        profileView.stampsController.updateStampBitmap(patternBitmap);
+//        emoji.getDrawable()
 
 
         TLObject entity = userId == 0 ? chat : user;
@@ -5503,12 +5521,23 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
 
 
+//        emoji.getDrawable()
 
 
 
 
-//        return profileView;
-        return fragmentView;
+
+
+        return profileView;
+//        return fragmentView;
+    }
+
+    public static Bitmap getBitmapFromDrawable(Drawable drawable, int width, int height) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, width, height);
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     public interface AvatarBitmapHandler {
