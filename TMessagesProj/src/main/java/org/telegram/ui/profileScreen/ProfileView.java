@@ -30,7 +30,7 @@ public class ProfileView extends ScrollView {
     private FrameLayout.LayoutParams textsLayout;
     private ButtonsLayout buttonsLayoutView;
 
-    public ProfileView(Context context) {
+    public ProfileView(Context context, ProfileViewModel viewModel) {
         super(context);
 
         rootFrame = new FrameLayout(context);
@@ -54,7 +54,7 @@ public class ProfileView extends ScrollView {
         headerFrame.setClipChildren(false);
         headerFrame.setClipToPadding(false);
 
-        setupBackgroundView(context, headerFrame);
+        setupBackgroundView(context, viewModel);
 
         avatarMetaball = new AvatarMetaball(context);
 
@@ -235,8 +235,8 @@ public class ProfileView extends ScrollView {
         rootFrame.addView(maskedView);
     }
 
-    private void setupBackgroundView(Context context, FrameLayout headerFrame) {
-        backgroundView = new GradientBackgroundView(context);
+    private void setupBackgroundView(Context context, ProfileViewModel viewModel) {
+        backgroundView = new GradientBackgroundView(context, viewModel.centerColor, viewModel.middleColor, viewModel.edgeColor);
         FrameLayout.LayoutParams rectParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 Adjust.Header.height + Adjust.Header.topMargin,

@@ -5469,25 +5469,14 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 //        ImageReceiver. BitmapHolder bitmap = avatarImage.getImageReceiver().getBitmapSafe();
 //        Drawable bitmap2 = avatarImage.getImageReceiver().currentMediaDrawable;
 
-        ProfileView profileView = new ProfileView(context);
-
-//        final boolean[] didSetSmallAvatar = {false};
-//        avatarImage.getImageReceiver().setDelegate((imageReceiver1, set, thumb, memCache) -> {
-//            if (didSetSmallAvatar[0]) {
-//                return;
-//            }
-//            ImageReceiver. BitmapHolder bitmap = avatarImage.getImageReceiver().getBitmapSafe();
-//            if (bitmap == null) {
-//                return;
-//            }
-//            Drawable bitmap2 = avatarImage.getImageReceiver().currentMediaDrawable;
-//            Log.d("xdd", "asdasd");
-//            profileView.updateSmallAvatarBitmap(bitmap.bitmap);
-////            profileView.updateBigAvatarBitmap(bitmap.bitmap);
-//            didSetSmallAvatar[0] = true;
-//        });
-
-//        ProfileViewModel profileViewModel = new ProfileViewModel(chat.title);
+        ProfileViewModel profileViewModel = new ProfileViewModel(
+                "title",
+                "subtitle",
+                peerColor.getColor2(),
+                peerColor.getColor1(),
+                peerColor.getColor3()
+        );
+        ProfileView profileView = new ProfileView(context, profileViewModel);
 
 
         TLObject entity = userId == 0 ? chat : user;
@@ -5514,9 +5503,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         }
 
 
-        return profileView;
 
-//        return fragmentView;
+
+
+
+//        return profileView;
+        return fragmentView;
     }
 
     public interface AvatarBitmapHandler {

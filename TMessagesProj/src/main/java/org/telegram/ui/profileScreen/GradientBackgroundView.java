@@ -9,14 +9,17 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 public class GradientBackgroundView extends FrameLayout {
-    private static final int CENTER_COLOR = 0xFF868FF2;
-    private static final int EDGE_COLOR = 0xFF865FD3;
-    private static final int MIDDLE_COLOR = 0xFF857AE4;
+    private int centerColor;
+    private int edgeColor;
+    private int middleColor;
 
     private Paint paint = new Paint();
 
-    public GradientBackgroundView(Context context) {
+    public GradientBackgroundView(Context context, int centerColor, int middleColor, int edgeColor) {
         super(context);
+        this.centerColor = centerColor;
+        this.middleColor = middleColor;
+        this.edgeColor = edgeColor;
     }
 
     public GradientBackgroundView(Context context, AttributeSet attrs) {
@@ -37,7 +40,7 @@ public class GradientBackgroundView extends FrameLayout {
                     centerX,
                     centerY,
                     radius,
-                    new int[] { CENTER_COLOR, MIDDLE_COLOR, EDGE_COLOR },
+                    new int[] { centerColor, middleColor, edgeColor },
                     new float[] { 0f, 0.3f, 1f },
 
                     Shader.TileMode.CLAMP
