@@ -12,8 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.FrameLayout;
 
-//import org.telegram.messenger.R;
-
 public class ProfileView extends ScrollView {
     private PhysicsScroller scroller;
     private GradientBackgroundView backgroundView;
@@ -29,6 +27,8 @@ public class ProfileView extends ScrollView {
     private FrameLayout.LayoutParams buttonsLayout;
     private FrameLayout.LayoutParams textsLayout;
     private ButtonsLayout buttonsLayoutView;
+    private LinearLayout contentColumn;
+
 
     public ProfileView(Context context, ProfileViewModel viewModel) {
         super(context);
@@ -67,6 +67,13 @@ public class ProfileView extends ScrollView {
             headerFrame.addView(gift.viewOnSpring.view);
         }
 
+        contentColumn = new LinearLayout(context);
+        contentColumn.setOrientation(LinearLayout.VERTICAL);
+        contentColumn.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+
         View spacer = new View(context);
         LinearLayout.LayoutParams spacerParams =
                 new LinearLayout.LayoutParams(
@@ -80,6 +87,7 @@ public class ProfileView extends ScrollView {
         scrollSpacer.setLayoutParams(scrollSpacerParams);
 
         inner.addView(headerFrame);
+        rootFrame.addView(contentColumn);
         inner.addView(spacer);
         inner.addView(scrollSpacer);
 
@@ -118,6 +126,10 @@ public class ProfileView extends ScrollView {
         });
     }
 
+    public void pushContent(View view) {
+        contentColumn.addView(view);
+    }
+
     public void updateSmallAvatarBitmap(Bitmap avatarBitmap) {
         avatar.setImageBitmap(avatarBitmap);
         if (headerGeometry.size != null) {
@@ -149,6 +161,13 @@ public class ProfileView extends ScrollView {
         buttonsLayout.topMargin = (int)headerHeight - Adjust.Header.buttonsBottom;
         buttonsLayoutView.setFadeOut(headerGeometry.scrollDownProgress);
         updateTextsLayout(headerGeometry, headerHeight);
+
+        FrameLayout.LayoutParams columnLayout = new FrameLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        columnLayout.topMargin = (int)headerHeight;
+        contentColumn.setLayoutParams(columnLayout);
     }
 
     private void updateTextsLayout(HeaderGeometry headerGeometry, float headerHeight) {

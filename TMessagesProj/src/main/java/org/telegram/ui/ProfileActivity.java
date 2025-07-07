@@ -5490,6 +5490,43 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         ProfileView profileView = new ProfileView(context, profileViewModel);
 
 
+
+        ArrayList<View> contentViews = new ArrayList<>();
+        int ws = View.MeasureSpec.makeMeasureSpec(listView.getMeasuredWidth(), View.MeasureSpec.EXACTLY);
+        int hs = View.MeasureSpec.makeMeasureSpec(listView.getMeasuredHeight(), View.MeasureSpec.UNSPECIFIED);
+        int count = listAdapter.getItemCount();
+        int totalHeight = 0;
+        for (int i = 0; i < count; i++) {
+            int type = listAdapter.getItemViewType(i);
+//            positionToOffset.put(i, listContentHeight);
+            if (type == ListAdapter.VIEW_TYPE_SHARED_MEDIA) {
+                totalHeight += listView.getMeasuredHeight();
+            } else {
+                RecyclerView.ViewHolder holder = listAdapter.createViewHolder(null, type);
+                listAdapter.onBindViewHolder(holder, i);
+                contentViews.add(holder.itemView);
+                holder.itemView.measure(ws, hs);
+                totalHeight += holder.itemView.getMeasuredHeight();
+            }
+        }
+
+        for (int i = 0; i < contentViews.size() - 1; i++) {
+            View currentView = contentViews.get(i);
+            if (currentView instanceof HeaderCell) {
+                contentViews.set(i, contentViews.get(i + 1));
+                contentViews.set(i + 1, currentView);
+                i++;
+            }
+        }
+
+        for (View view : contentViews) {
+            profileView.pushContent(view);
+        }
+////        RecyclerView.ViewHolder holder = new RecyclerView.ViewHolder(new View(context));
+////        listAdapter.onBindViewHolder(null, 2);
+////        String asd = "aasd";
+
+
         AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable emoji = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(profileView, false, dp(20), AnimatedEmojiDrawable.CACHE_TYPE_ALERT_PREVIEW_STATIC);
         emoji.set(ChatObject.getProfileEmojiId(chat), false);
 //        emoji.setColor(peerColor.getColor2(false));
@@ -5532,8 +5569,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 
 
-//        return profileView;
-        return fragmentView;
+        return profileView;
+//        return fragmentView;
     }
 
     public static Bitmap getBitmapFromDrawable(Drawable drawable, int width, int height) {
