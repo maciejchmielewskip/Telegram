@@ -5477,14 +5477,15 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 //        int color1 = peerColor.getBgColor1(Theme.isCurrentThemeDark());
 //        int color2 = peerColor.getBgColor2(Theme.isCurrentThemeDark());
-                int color1 = peerColor.getBgColor1(false);
+        int color1 = peerColor.getBgColor1(false);
         int color2 = peerColor.getBgColor2(false);
         ProfileViewModel profileViewModel = new ProfileViewModel(
                 "title",
                 "subtitle",
                 color2,
                 color2,
-                color1
+                color1,
+                peerColor.getColor3(false)
         );
         ProfileView profileView = new ProfileView(context, profileViewModel);
 

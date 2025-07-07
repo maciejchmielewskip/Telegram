@@ -58,7 +58,7 @@ public class ProfileView extends ScrollView {
 
         avatarMetaball = new AvatarMetaball(context);
 
-        stampsController = StampsController.make(getContext());
+        stampsController = StampsController.make(getContext(), viewModel.stampColor);
         for (Stamp stamp : stampsController.stamps) {
             headerFrame.addView(stamp.viewOnSpring.view);
         }

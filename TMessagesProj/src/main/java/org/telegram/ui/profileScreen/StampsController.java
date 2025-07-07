@@ -2,9 +2,6 @@ package org.telegram.ui.profileScreen;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -27,7 +24,7 @@ class Stamp {
 public class StampsController {
     private static final CartesianCoordinates marginShift = new CartesianCoordinates(0, Adjust.Header.topMargin);
 
-    static StampsController make(Context context) {
+    static StampsController make(Context context, int color) {
         ArrayList<Stamp> stamps = new ArrayList<Stamp>();
         double[][] foxData = {
                 {535.5,108.5},
@@ -57,8 +54,7 @@ public class StampsController {
             double distance = Math.hypot(x - 540, y - 304);
             PolarCoordinates position = new PolarCoordinates((float)radians, (float)distance / 300);
             ImageView imageView = new ImageView(context);
-            imageView.setColorFilter(Color.RED, android.graphics.PorterDuff.Mode.SRC_IN);
-
+            imageView.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(Adjust.Stamp.size, Adjust.Stamp.size);
             imageView.setLayoutParams(params);
             stamps.add(new Stamp(
@@ -72,14 +68,16 @@ public class StampsController {
             ));
         }
 
-        return new StampsController(stamps);
+        return new StampsController(stamps, color);
     }
 
-    public StampsController(ArrayList<Stamp> stamps) {
+    public StampsController(ArrayList<Stamp> stamps, int color) {
         this.stamps = stamps;
+        this.color = color;
     }
 
     final ArrayList<Stamp> stamps;
+    private final int color;
 
     public void handleHeaderGeometryChange(HeaderGeometry headerGeometry) {
         if (headerGeometry.scrollDownOffset == null || headerGeometry.size == null) {

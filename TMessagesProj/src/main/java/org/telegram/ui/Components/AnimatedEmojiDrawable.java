@@ -449,7 +449,7 @@ public class AnimatedEmojiDrawable extends Drawable {
 
     private boolean imageReceiverEmojiThumb;
     private ImageReceiver imageReceiver;
-    private float alpha = 1f;
+    private float alpha = 1f; // Hardcoded to 1
 
     public AnimatedEmojiDrawable(int cacheType, int currentAccount, long documentId) {
         this.currentAccount = currentAccount;
@@ -799,7 +799,7 @@ public class AnimatedEmojiDrawable extends Drawable {
             return;
         }
         imageReceiver.setImageCoords(getBounds());
-        imageReceiver.setAlpha(alpha);
+        imageReceiver.setAlpha(1f); // Hardcoded to 1
         imageReceiver.draw(canvas);
     }
 
@@ -808,7 +808,7 @@ public class AnimatedEmojiDrawable extends Drawable {
             return;
         }
         imageReceiver.setImageCoords(drawableBounds);
-        imageReceiver.setAlpha(alpha);
+        imageReceiver.setAlpha(1f); // Hardcoded to 1
         imageReceiver.draw(canvas);
     }
 
@@ -816,7 +816,7 @@ public class AnimatedEmojiDrawable extends Drawable {
         if (imageReceiver == null) {
             return;
         }
-        imageReceiver.setAlpha(alpha);
+        imageReceiver.setAlpha(1f); // Hardcoded to 1
         imageReceiver.draw(canvas, backgroundThreadDrawHolder);
     }
 
@@ -924,7 +924,7 @@ public class AnimatedEmojiDrawable extends Drawable {
             TLRPC.InputStickerSet set = MessageObject.getInputStickerSet(document);
             return isDefaultStatusEmojiCached = (
                     set instanceof TLRPC.TL_inputStickerSetEmojiDefaultStatuses ||
-                    set instanceof TLRPC.TL_inputStickerSetID && (set.id == 773947703670341676L || set.id == 2964141614563343L)
+                            set instanceof TLRPC.TL_inputStickerSetID && (set.id == 773947703670341676L || set.id == 2964141614563343L)
             );
         }
         return false;
@@ -943,14 +943,14 @@ public class AnimatedEmojiDrawable extends Drawable {
 
     @Override
     public int getAlpha() {
-        return (int) (255 * this.alpha);
+        return 255; // Hardcoded to 255 (full opacity)
     }
 
     @Override
     public void setAlpha(int alpha) {
-        this.alpha = alpha / 255f;
+        // Alpha is hardcoded to 1, no changes needed
         if (imageReceiver != null) {
-            imageReceiver.setAlpha(this.alpha);
+            imageReceiver.setAlpha(1f); // Hardcoded to 1
         }
     }
 
@@ -1031,13 +1031,13 @@ public class AnimatedEmojiDrawable extends Drawable {
             return this.height;
         }
 
-        private int alpha = 255;
+        private int alpha = 255; // Hardcoded to 255
 
         @Override
         public void setAlpha(int alpha) {
-            this.alpha = alpha;
+            // Alpha is hardcoded to 255, no changes needed
             if (this.drawable != null) {
-                this.drawable.setAlpha(alpha);
+                this.drawable.setAlpha(255); // Hardcoded to 255
             }
         }
 
@@ -1171,24 +1171,24 @@ public class AnimatedEmojiDrawable extends Drawable {
                 invalidate();
             }
             if (drawables[1] != null && progress < 1) {
-                drawables[1].setAlpha((int) (alpha * (1f - progress)));
+                drawables[1].setAlpha((int) (255 * (1f - progress))); // Hardcoded to 255
                 int dw = drawables[1].getIntrinsicWidth() < 0 ? getIntrinsicWidth() : drawables[1].getIntrinsicWidth();
                 int dh = drawables[1].getIntrinsicHeight() < 0 ? getIntrinsicHeight() : drawables[1].getIntrinsicHeight();
                 if (drawables[1] instanceof AnimatedEmojiDrawable) {
                     drawables[1].setBounds(bounds);
                 } else if (center) {
                     drawables[1].setBounds(
-                        bounds.centerX() - dw / 2,
-                        bounds.centerY() - dh / 2,
-                        bounds.centerX() + dw / 2,
-                        bounds.centerY() + dh / 2
+                            bounds.centerX() - dw / 2,
+                            bounds.centerY() - dh / 2,
+                            bounds.centerX() + dw / 2,
+                            bounds.centerY() + dh / 2
                     );
                 } else { // left
                     drawables[1].setBounds(
-                        bounds.left,
-                        bounds.centerY() - dh / 2,
-                        bounds.left + dw,
-                        bounds.centerY() + dh / 2
+                            bounds.left,
+                            bounds.centerY() - dh / 2,
+                            bounds.left + dw,
+                            bounds.centerY() + dh / 2
                     );
                 }
                 drawables[1].setColorFilter(colorFilter);
@@ -1231,7 +1231,7 @@ public class AnimatedEmojiDrawable extends Drawable {
                             bounds.centerY() + dh / 2
                     );
                 }
-                drawables[0].setAlpha(alpha);
+                drawables[0].setAlpha(255); // Hardcoded to 255
                 drawables[0].setColorFilter(colorFilter);
                 drawables[0].draw(canvas);
                 drawables[0].setColorFilter(null);
@@ -1253,8 +1253,8 @@ public class AnimatedEmojiDrawable extends Drawable {
 
         public float isNotEmpty() {
             return (
-                (drawables[1] != null ? 1f - changeProgress.get() : 0) +
-                (drawables[0] != null ? changeProgress.get() : 0)
+                    (drawables[1] != null ? 1f - changeProgress.get() : 0) +
+                            (drawables[0] != null ? changeProgress.get() : 0)
             );
         }
 
@@ -1424,7 +1424,7 @@ public class AnimatedEmojiDrawable extends Drawable {
 
         @Override
         public void setAlpha(int i) {
-            alpha = i;
+            // Alpha is hardcoded to 255, no changes needed
         }
 
         @Override

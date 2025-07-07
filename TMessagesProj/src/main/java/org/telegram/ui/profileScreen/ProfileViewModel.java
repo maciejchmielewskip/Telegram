@@ -6,13 +6,15 @@ public class ProfileViewModel {
     final int centerColor;
     final int middleColor;
     final int edgeColor;
+    final int stampColor;
 
 
-    public ProfileViewModel(String title, String subtitle, int centerColor, int middleColor, int edgeColor) {
+    public ProfileViewModel(String title, String subtitle, int centerColor, int middleColor, int edgeColor, int stampColor) {
         this.title = title;
         this.subtitle = subtitle;
         this.centerColor = centerColor;
         this.middleColor = middleColor;
         this.edgeColor = edgeColor;
+        this.stampColor = stampColor;
     }
 }
