@@ -5477,17 +5477,18 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 //        int color1 = peerColor.getBgColor1(Theme.isCurrentThemeDark());
 //        int color2 = peerColor.getBgColor2(Theme.isCurrentThemeDark());
-        int color1 = peerColor.getBgColor1(false);
-        int color2 = peerColor.getBgColor2(false);
+        int color1 = peerColor.getBgColor1(Theme.isCurrentThemeDark());
+        int color2 = peerColor.getBgColor2(Theme.isCurrentThemeDark());
         ProfileViewModel profileViewModel = new ProfileViewModel(
                 "title",
                 "subtitle",
                 color2,
                 color2,
                 color1,
-                peerColor.getColor3(false)
+                peerColor.getColor3(Theme.isCurrentThemeDark())
         );
         ProfileView profileView = new ProfileView(context, profileViewModel);
+
 
         AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable emoji = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(profileView, false, dp(20), AnimatedEmojiDrawable.CACHE_TYPE_ALERT_PREVIEW_STATIC);
         emoji.set(ChatObject.getProfileEmojiId(chat), false);
@@ -5521,6 +5522,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             giftView.update();
         }
 
+//        profileView.rootFrame.addView(sharedMediaLayout);
+
 
 //        emoji.getDrawable()
 
@@ -5529,8 +5532,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 
 
-        return profileView;
-//        return fragmentView;
+//        return profileView;
+        return fragmentView;
     }
 
     public static Bitmap getBitmapFromDrawable(Drawable drawable, int width, int height) {
@@ -9644,6 +9647,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         if (listView != null) {
             listView.setTranslateSelectorPosition(bizHoursRow);
         }
+        String ro = "w";
     }
 
     private Drawable getScamDrawable(int type) {
