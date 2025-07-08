@@ -5459,7 +5459,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         TLRPC.ChatFull chatFull = getMessagesController().getChatFull(chatId);
         TLRPC.Chat chat = getMessagesController().getChat(chatId);
         String username = ChatObject.getPublicUsername(chat);
-        String chatName = chat.title;
+//        String chatName = chat.title;
         CharSequence subtitle = onlineTextView[0].getText();
         CharSequence title = nameTextView[0].getText();
 
@@ -5510,18 +5510,24 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
         }
 
-        for (int i = 0; i < contentViews.size() - 1; i++) {
-            View currentView = contentViews.get(i);
-            if (currentView instanceof HeaderCell) {
-                contentViews.set(i, contentViews.get(i + 1));
-                contentViews.set(i + 1, currentView);
-                i++;
-            }
-        }
+//        for (int i = 0; i < contentViews.size() - 1; i++) {
+//            View currentView = contentViews.get(i);
+//            if (currentView instanceof HeaderCell) {
+//                contentViews.set(i, contentViews.get(i + 1));
+//                contentViews.set(i + 1, currentView);
+//                i++;
+//            }
+//        }
 
         for (View view : contentViews) {
             profileView.pushContent(view);
         }
+
+        sharedMediaLayout.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                1600
+        ));
+        profileView.pushContent(sharedMediaLayout);
 ////        RecyclerView.ViewHolder holder = new RecyclerView.ViewHolder(new View(context));
 ////        listAdapter.onBindViewHolder(null, 2);
 ////        String asd = "aasd";
