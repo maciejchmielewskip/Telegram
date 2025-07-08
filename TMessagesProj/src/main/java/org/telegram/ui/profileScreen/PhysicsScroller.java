@@ -6,7 +6,6 @@ import android.view.VelocityTracker;
 import android.util.Log;
 
 public class PhysicsScroller {
-
     public interface Listener {
         void onUpdate(float value, float velocity);
         void onEnd();
@@ -26,11 +25,13 @@ public class PhysicsScroller {
     private float fingerTarget = 0f;
     private long recentTime;
 
-//    private VelocityTracker velocityTracker;
+    //    private VelocityTracker velocityTracker;
     private final PhysicalForce.Spring fingerSpring =
             new PhysicalForce.Spring(500, 20.0f, 0f);
     private final PhysicalForce.Switch fingerSwitch = new PhysicalForce.Switch(fingerSpring, false);
     private final PhysicalForce.Friction friction = new PhysicalForce.Friction(2);
+    private final PhysicalForce.Spring bottomEdgeSpring = PhysicalForce.Spring.scrollEdge(3000);
+    private final PhysicalForce.OneSide bottomEdgeOneSide = new PhysicalForce.OneSide(bottomEdgeSpring, false, 3000);
     private final PhysicalWorld world = new PhysicalWorld(
             fingerSwitch,
             friction,
@@ -40,15 +41,16 @@ public class PhysicsScroller {
                     0
             ),
             new PhysicalForce.OneSide(
-                new PhysicalForce.OneSide(
-                        PhysicalForce.Spring.scrollEdge(Adjust.Header.topMargin),
-                        true,
-                        Adjust.Header.topMargin
-                ),
+                    new PhysicalForce.OneSide(
+                            PhysicalForce.Spring.scrollEdge(Adjust.Header.topMargin),
+                            true,
+                            Adjust.Header.topMargin
+                    ),
                     false,
                     10
-            )
-        );
+            ),
+            bottomEdgeOneSide
+    );
 
     public PhysicsScroller(View view) {
         choreographerView = view;
@@ -143,5 +145,11 @@ public class PhysicsScroller {
         recentTime = System.nanoTime();
         running = true;
         choreographerView.postOnAnimation(animationRunnable);
+    }
+
+    public void updateBottomEdge(int scrollableSpace) {
+        int position = scrollableSpace + 1005;
+        bottomEdgeOneSide.threshold = position;
+        bottomEdgeSpring.anchor = position;
     }
 }

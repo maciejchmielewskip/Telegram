@@ -5485,8 +5485,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 color2,
                 color2,
                 color1,
-                peerColor.getColor3(Theme.isCurrentThemeDark())
-//                Color.RED
+                peerColor.getColor3(Theme.isCurrentThemeDark()),
+//                Color.RED,
+                R.drawable.ic_ab_back,
+                R.drawable.ic_ab_other
         );
         ProfileView profileView = new ProfileView(context, profileViewModel);
 
@@ -5526,9 +5528,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
         sharedMediaLayout.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                1600
+                ViewGroup.LayoutParams.MATCH_PARENT
         ));
-        profileView.pushContent(sharedMediaLayout);
+        profileView.mediaLayout.addView(sharedMediaLayout);
 ////        RecyclerView.ViewHolder holder = new RecyclerView.ViewHolder(new View(context));
 ////        listAdapter.onBindViewHolder(null, 2);
 ////        String asd = "aasd";

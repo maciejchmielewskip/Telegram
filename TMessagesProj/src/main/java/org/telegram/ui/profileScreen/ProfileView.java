@@ -3,14 +3,18 @@ package org.telegram.ui.profileScreen;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Path;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.FrameLayout;
+import android.view.ViewTreeObserver;
 
 public class ProfileView extends ScrollView {
     private PhysicsScroller scroller;
@@ -28,7 +32,10 @@ public class ProfileView extends ScrollView {
     private FrameLayout.LayoutParams textsLayout;
     private ButtonsLayout buttonsLayoutView;
     private LinearLayout contentColumn;
-
+    private LayoutParams backLayoutParams;
+    private LayoutParams moreLayoutParams;
+    public FrameLayout mediaLayout;
+    private FrameLayout headerFrame;
 
     public ProfileView(Context context, ProfileViewModel viewModel) {
         super(context);
@@ -44,7 +51,7 @@ public class ProfileView extends ScrollView {
         inner.setLayoutParams(new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
-        FrameLayout headerFrame = new FrameLayout(context);
+        headerFrame = new FrameLayout(context);
         headerFrame.setLayoutParams(
                 new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -68,17 +75,23 @@ public class ProfileView extends ScrollView {
         }
 
         contentColumn = new LinearLayout(context);
+        contentColumn.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int contentHeight = contentColumn.getHeight();
+                int frameHeight = getHeight();
+
+                scroller.updateBottomEdge(contentHeight - frameHeight);
+            }
+        });
         contentColumn.setOrientation(LinearLayout.VERTICAL);
         contentColumn.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-
-        View spacer = new View(context);
-        LinearLayout.LayoutParams spacerParams =
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, 60);
-        spacer.setLayoutParams(spacerParams);
+        mediaLayout = new FrameLayout(context);
+        mediaLayout.setBackgroundColor(Color.YELLOW);
+        contentColumn.addView(mediaLayout);
 
         View scrollSpacer = new View(context);
         LinearLayout.LayoutParams scrollSpacerParams =
@@ -86,9 +99,10 @@ public class ProfileView extends ScrollView {
                         LinearLayout.LayoutParams.MATCH_PARENT, 3000);
         scrollSpacer.setLayoutParams(scrollSpacerParams);
 
+
         inner.addView(headerFrame);
-        rootFrame.addView(contentColumn);
-        inner.addView(spacer);
+        inner.addView(contentColumn);
+
         inner.addView(scrollSpacer);
 
         rootFrame.addView(inner);
@@ -106,6 +120,7 @@ public class ProfileView extends ScrollView {
         setupExpandableAvatar(context);
         setupTextViews(context);
         setupButtons(context);
+        setupTopButtons(context, viewModel);
 
         scroller = new PhysicsScroller(this);
         scroller.setListener(new PhysicsScroller.Listener() {
@@ -126,8 +141,25 @@ public class ProfileView extends ScrollView {
         });
     }
 
+    private void setupTopButtons(Context context, ProfileViewModel viewModel) {
+        TopButton back = new TopButton(context, viewModel.backButtonDrawable);
+        int tappableSize = 175;
+        int topMargin = 270;
+        backLayoutParams = new LayoutParams(tappableSize, tappableSize);
+        backLayoutParams.topMargin = topMargin;
+        back.setLayoutParams(backLayoutParams);
+        rootFrame.addView(back);
+
+        TopButton more = new TopButton(context, viewModel.moreButtonDrawable);
+        moreLayoutParams = new LayoutParams(tappableSize, tappableSize);
+        moreLayoutParams.topMargin = topMargin;
+        moreLayoutParams.gravity = Gravity.RIGHT;
+        more.setLayoutParams(moreLayoutParams);
+        rootFrame.addView(more);
+    }
+
     public void pushContent(View view) {
-        contentColumn.addView(view);
+        contentColumn.addView(view, contentColumn.getChildCount() - 1);
     }
 
     public void updateSmallAvatarBitmap(Bitmap avatarBitmap) {
@@ -161,12 +193,25 @@ public class ProfileView extends ScrollView {
         buttonsLayout.topMargin = (int)headerHeight - Adjust.Header.buttonsBottom;
         buttonsLayoutView.setFadeOut(headerGeometry.scrollDownProgress);
         updateTextsLayout(headerGeometry, headerHeight);
+        updateContentLayout(headerGeometry, headerHeight);
+        int buttonTop = 270 + headerGeometry.scrollDownOffset.intValue();
+        backLayoutParams.topMargin = buttonTop;
+        moreLayoutParams.topMargin = buttonTop;
+    }
 
-        FrameLayout.LayoutParams columnLayout = new FrameLayout.LayoutParams(
+    private void updateContentLayout(HeaderGeometry headerGeometry, float headerHeight) {
+        LinearLayout.LayoutParams columnLayout = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        columnLayout.topMargin = (int)headerHeight;
+
+        int contentTop;
+        if (headerGeometry.scrollUpProgress > 0) {
+            contentTop = (int)headerHeight - Adjust.Header.height;
+        } else {
+            contentTop = 200;
+        }
+        columnLayout.topMargin = contentTop;
         contentColumn.setLayoutParams(columnLayout);
     }
 
@@ -217,7 +262,9 @@ public class ProfileView extends ScrollView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        headerGeometry.size = new CartesianCoordinates((float)w, (float)h);
+        headerGeometry.size = new CartesianCoordinates((float) headerFrame.getWidth(), (float) headerFrame.getHeight());
+//        headerGeometry.size = new CartesianCoordinates((float)w, (float)h);
+        mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h - 240));
         handleHeaderGeometryChange();
     }
 
