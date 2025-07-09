@@ -9,9 +9,10 @@ public class ProfileViewModel {
     final int stampColor;
     final int backButtonDrawable;
     final int moreButtonDrawable;
+    final int backgroundColor;
 
 
-    public ProfileViewModel(String title, String subtitle, int centerColor, int middleColor, int edgeColor, int stampColor, int backButtonDrawable, int moreButtonDrawable) {
+    public ProfileViewModel(String title, String subtitle, int centerColor, int middleColor, int edgeColor, int stampColor, int backButtonDrawable, int moreButtonDrawable, int backgroundColor) {
         this.title = title;
         this.subtitle = subtitle;
         this.centerColor = centerColor;
@@ -20,5 +21,6 @@ public class ProfileViewModel {
         this.stampColor = stampColor;
         this.backButtonDrawable = backButtonDrawable;
         this.moreButtonDrawable = moreButtonDrawable;
+        this.backgroundColor = backgroundColor;
     }
 }

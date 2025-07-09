@@ -2,14 +2,10 @@ package org.telegram.ui.profileScreen;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Path;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -46,9 +42,9 @@ public class ProfileView extends ScrollView {
         rootFrame.setClipChildren(false);
         rootFrame.setClipToPadding(false);
 
-        LinearLayout inner = new LinearLayout(context);
-        inner.setOrientation(LinearLayout.VERTICAL);
-        inner.setLayoutParams(new LayoutParams(
+        LinearLayout scrollableView = new LinearLayout(context);
+        scrollableView.setOrientation(LinearLayout.VERTICAL);
+        scrollableView.setLayoutParams(new LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 
         headerFrame = new FrameLayout(context);
@@ -61,20 +57,10 @@ public class ProfileView extends ScrollView {
         headerFrame.setClipChildren(false);
         headerFrame.setClipToPadding(false);
 
-        setupBackgroundView(context, viewModel);
-
         avatarMetaball = new AvatarMetaball(context);
 
-        stampsController = StampsController.make(getContext(), viewModel.stampColor);
-        for (Stamp stamp : stampsController.stamps) {
-            headerFrame.addView(stamp.viewOnSpring.view);
-        }
-        giftsController = GiftsController.make(getContext());
-        for (Gift gift : giftsController.gifts) {
-            headerFrame.addView(gift.viewOnSpring.view);
-        }
-
         contentColumn = new LinearLayout(context);
+        contentColumn.setBackgroundColor(viewModel.backgroundColor);
         contentColumn.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -89,8 +75,8 @@ public class ProfileView extends ScrollView {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        mediaLayout = new FrameLayout(context);
-        mediaLayout.setBackgroundColor(Color.YELLOW);
+
+        mediaLayout = new PreventScroll(context);
         contentColumn.addView(mediaLayout);
 
         View scrollSpacer = new View(context);
@@ -100,14 +86,14 @@ public class ProfileView extends ScrollView {
         scrollSpacer.setLayoutParams(scrollSpacerParams);
 
 
-        inner.addView(headerFrame);
-        inner.addView(contentColumn);
-
-        inner.addView(scrollSpacer);
-
-        rootFrame.addView(inner);
+        scrollableView.addView(headerFrame);
+        scrollableView.addView(contentColumn);
+        scrollableView.addView(scrollSpacer);
+        rootFrame.addView(scrollableView);
+        setupBackgroundView(context, viewModel);
+        setupParticlesView(context, viewModel);
         setupMaskedView(context);
-        setupAvatar(getContext());
+        setupAvatar(context);
 
         addView(rootFrame);
 
@@ -118,7 +104,7 @@ public class ProfileView extends ScrollView {
         });
 
         setupExpandableAvatar(context);
-        setupTextViews(context);
+        setupTextViews(context, viewModel);
         setupButtons(context);
         setupTopButtons(context, viewModel);
 
@@ -139,6 +125,25 @@ public class ProfileView extends ScrollView {
                 me.scrollTo(0, Adjust.Header.topMargin);
             }
         });
+    }
+
+    private void setupParticlesView(Context context, ProfileViewModel viewModel) {
+        FrameLayout particlesView = new FrameLayout(context);
+        particlesView.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        Adjust.Header.height
+                )
+        );
+        stampsController = StampsController.make(getContext(), viewModel.stampColor);
+        for (Stamp stamp : stampsController.stamps) {
+            particlesView.addView(stamp.viewOnSpring.view);
+        }
+        giftsController = GiftsController.make(getContext());
+        for (Gift gift : giftsController.gifts) {
+            particlesView.addView(gift.viewOnSpring.view);
+        }
+        rootFrame.addView(particlesView);
     }
 
     private void setupTopButtons(Context context, ProfileViewModel viewModel) {
@@ -264,7 +269,7 @@ public class ProfileView extends ScrollView {
         super.onSizeChanged(w, h, oldw, oldh);
         headerGeometry.size = new CartesianCoordinates((float) headerFrame.getWidth(), (float) headerFrame.getHeight());
 //        headerGeometry.size = new CartesianCoordinates((float)w, (float)h);
-        mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, h - 240));
+        mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, h - 240));
         handleHeaderGeometryChange();
     }
 
@@ -314,10 +319,10 @@ public class ProfileView extends ScrollView {
         rootFrame.addView(backgroundView);
     }
 
-    private void setupTextViews(Context context) {
+    private void setupTextViews(Context context, ProfileViewModel viewModel) {
         textsView = new TextsView(context);
-        textsView.setTitle("Ronald Cooper");
-        textsView.setSubtitle("online");
+        textsView.setTitle(viewModel.title);
+        textsView.setSubtitle(viewModel.subtitle);
 
         textsLayout = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,

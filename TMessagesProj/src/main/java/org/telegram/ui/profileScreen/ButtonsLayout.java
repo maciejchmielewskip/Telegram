@@ -10,6 +10,8 @@ import android.view.View;
 
 import org.telegram.messenger.R;
 
+//import org.telegram.messenger.R;
+
 public class ButtonsLayout extends LinearLayout {
     private FrameLayout.LayoutParams buttonsLayoutParams;
 
@@ -29,12 +31,15 @@ public class ButtonsLayout extends LinearLayout {
         buttonsLayoutParams.topMargin = 810;
         setLayoutParams(buttonsLayoutParams);
 
+        String[] titles = new String[]{"Message", "Mute", "Call", "Video"};
+        int[] icons = new int[]{R.drawable.message, R.drawable.mute, R.drawable.call, R.drawable.video};
+
         int buttonCount = 4;
         for (int i = 0; i < buttonCount; i++) {
             IconTextButton button = new IconTextButton(
                     context,
-                    "Message",
-                    R.drawable.message,
+                    titles[i],
+                    icons[i],
                     0xEAEAEA,
                     PorterDuff.Mode.DARKEN
             );
