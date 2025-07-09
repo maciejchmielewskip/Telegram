@@ -5477,18 +5477,19 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 //        int color1 = peerColor.getBgColor1(Theme.isCurrentThemeDark());
 //        int color2 = peerColor.getBgColor2(Theme.isCurrentThemeDark());
-        
 
-        int color1 = peerColor.getBgColor1(Theme.isCurrentThemeDark());
-        int color2 = peerColor.getBgColor2(Theme.isCurrentThemeDark());
+
+        int defaultHeaderColor = Theme.isCurrentThemeDark() ? 0xFF253140 : 0xFF5A8FBB;
+        int color1 = peerColor == null ? defaultHeaderColor : peerColor.getBgColor1(Theme.isCurrentThemeDark());
+        int color2 = peerColor == null ? defaultHeaderColor : peerColor.getBgColor2(Theme.isCurrentThemeDark());
         int backgroundColor = Theme.isCurrentThemeDark() ? 0xFF151E26 : 0xFFF0F0F0;
         ProfileViewModel profileViewModel = new ProfileViewModel(
-                "title",
-                "subtitle",
+                title.toString(),
+                subtitle.toString(),
                 color2,
                 color2,
                 color1,
-                peerColor.getColor3(Theme.isCurrentThemeDark()),
+                peerColor == null ? defaultHeaderColor : peerColor.getColor3(Theme.isCurrentThemeDark()),
                 R.drawable.ic_ab_back,
                 R.drawable.ic_ab_other,
                 backgroundColor
