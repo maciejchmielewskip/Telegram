@@ -187,6 +187,16 @@ public class ExpandingAvatar extends View {
                 paint.setAlpha(blurAlpha);
                 canvas.drawBitmap(blurredFadeAvatar, null, drawRect, paint);
                 paint.setAlpha(saveAlpha);
+                Paint gradientPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                LinearGradient gradient = new LinearGradient(
+                        drawRect.left, drawRect.top, drawRect.left, drawRect.bottom,
+                        new int[] {0x55000000, 0x00000000, 0x00000000, 0x55000000, 0x55000000},
+                        new float[] {0, 0.3f, 0.65f, 0.85f, 1},
+                        Shader.TileMode.CLAMP
+                );
+                gradientPaint.setShader(gradient);
+                gradientPaint.setAlpha((int)(blurAlpha * 0.8f));
+                canvas.drawRect(drawRect, gradientPaint);
             }
             canvas.restore();
         }

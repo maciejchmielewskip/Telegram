@@ -90,9 +90,6 @@ abstract class PhysicalForce {
         }
 
         public float force(float location, float velocity) {
-            if (stiffness == 5) {
-                Log.d("QQQ", "dist: " + (location - anchor));
-            }
             return -stiffness * (location - anchor) - damping * velocity;
         }
     }

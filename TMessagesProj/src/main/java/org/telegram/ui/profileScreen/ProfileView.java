@@ -3,6 +3,7 @@ package org.telegram.ui.profileScreen;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Path;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +33,9 @@ public class ProfileView extends ScrollView {
     private LayoutParams moreLayoutParams;
     public FrameLayout mediaLayout;
     private FrameLayout headerFrame;
+    public TopButton back;
+    public TopButton more;
+    private boolean initialScrollApplied = false;
 
     public ProfileView(Context context, ProfileViewModel viewModel) {
         super(context);
@@ -98,10 +102,6 @@ public class ProfileView extends ScrollView {
         addView(rootFrame);
 
         headerGeometry.updateScrollOffset(0);
-        headerFrame.post(() -> {
-            headerGeometry.size = new CartesianCoordinates((float) headerFrame.getWidth(), (float) headerFrame.getHeight());
-            handleHeaderGeometryChange();
-        });
 
         setupExpandableAvatar(context);
         setupTextViews(context, viewModel);
@@ -117,14 +117,6 @@ public class ProfileView extends ScrollView {
             @Override
             public void onEnd() {}
         });
-
-        ProfileView me = this;
-        this.post(new Runnable() {
-            @Override
-            public void run() {
-                me.scrollTo(0, Adjust.Header.topMargin);
-            }
-        });
     }
 
     private void setupParticlesView(Context context, ProfileViewModel viewModel) {
@@ -139,7 +131,7 @@ public class ProfileView extends ScrollView {
         for (Stamp stamp : stampsController.stamps) {
             particlesView.addView(stamp.viewOnSpring.view);
         }
-        giftsController = GiftsController.make(getContext());
+        giftsController = GiftsController.make(getContext(), viewModel.giftsCount);
         for (Gift gift : giftsController.gifts) {
             particlesView.addView(gift.viewOnSpring.view);
         }
@@ -147,7 +139,7 @@ public class ProfileView extends ScrollView {
     }
 
     private void setupTopButtons(Context context, ProfileViewModel viewModel) {
-        TopButton back = new TopButton(context, viewModel.backButtonDrawable);
+        back = new TopButton(context, viewModel.backButtonDrawable);
         int tappableSize = 175;
         int topMargin = 270;
         backLayoutParams = new LayoutParams(tappableSize, tappableSize);
@@ -155,7 +147,7 @@ public class ProfileView extends ScrollView {
         back.setLayoutParams(backLayoutParams);
         rootFrame.addView(back);
 
-        TopButton more = new TopButton(context, viewModel.moreButtonDrawable);
+        more = new TopButton(context, viewModel.moreButtonDrawable);
         moreLayoutParams = new LayoutParams(tappableSize, tappableSize);
         moreLayoutParams.topMargin = topMargin;
         moreLayoutParams.gravity = Gravity.RIGHT;
@@ -265,10 +257,18 @@ public class ProfileView extends ScrollView {
     }
 
     @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        if (!initialScrollApplied) {
+            scrollTo(0, Adjust.Header.topMargin);
+            initialScrollApplied = true;
+        }
+    }
+
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        headerGeometry.size = new CartesianCoordinates((float) headerFrame.getWidth(), (float) headerFrame.getHeight());
-//        headerGeometry.size = new CartesianCoordinates((float)w, (float)h);
+        headerGeometry.size = new CartesianCoordinates((float) w, (float) Adjust.Header.height);
         mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, h - 240));
         handleHeaderGeometryChange();
     }

@@ -25,7 +25,7 @@ public class PhysicsScroller {
     private float fingerTarget = 0f;
     private long recentTime;
 
-    //    private VelocityTracker velocityTracker;
+//    private VelocityTracker velocityTracker;
     private final PhysicalForce.Spring fingerSpring =
             new PhysicalForce.Spring(500, 20.0f, 0f);
     private final PhysicalForce.Switch fingerSwitch = new PhysicalForce.Switch(fingerSpring, false);
@@ -41,16 +41,16 @@ public class PhysicsScroller {
                     0
             ),
             new PhysicalForce.OneSide(
-                    new PhysicalForce.OneSide(
-                            PhysicalForce.Spring.scrollEdge(Adjust.Header.topMargin),
-                            true,
-                            Adjust.Header.topMargin
-                    ),
+                new PhysicalForce.OneSide(
+                        PhysicalForce.Spring.scrollEdge(Adjust.Header.topMargin),
+                        true,
+                        Adjust.Header.topMargin
+                ),
                     false,
                     10
             ),
             bottomEdgeOneSide
-    );
+        );
 
     public PhysicsScroller(View view) {
         choreographerView = view;
@@ -65,28 +65,17 @@ public class PhysicsScroller {
             case MotionEvent.ACTION_DOWN:
                 fingerSwitch.isOn = true;
                 lastFingerY = ev.getY();
-//                Log.d("QQQ", "d: " + lastFingerY);
                 fingerTarget = value;
                 fingerSpring.anchor = fingerTarget;
                 ensureRunning();
                 break;
 
             case MotionEvent.ACTION_MOVE:
-//                if (!fingerSwitch.isOn) {
-//                    fingerSwitch.isOn = true;
-//                    lastFingerY = ev.getY();
-//                    Log.d("QQQ", "d: " + lastFingerY);
-//                    fingerTarget = value;
-//                    fingerSpring.anchor = fingerTarget;
-//                }
-
                 float y = ev.getY();
-//                Log.d("QQQ", "m: " + y);
                 float dy = y - lastFingerY;
                 lastFingerY = y;
                 fingerTarget -= dy;
                 fingerSpring.anchor = fingerTarget;
-//                Log.d("QQQ", "anchor: " + fingerTarget);
                 ensureRunning();
                 break;
 
@@ -122,7 +111,6 @@ public class PhysicsScroller {
 
 
             if (listener != null) listener.onUpdate(value, velocity);
-//            Log.d("QQQ", "value: " + value);
 
             if (Math.abs(velocity) > EPS) {
                 choreographerView.postOnAnimation(this);

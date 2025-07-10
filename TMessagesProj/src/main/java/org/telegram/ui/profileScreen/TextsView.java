@@ -36,7 +36,7 @@ public class TextsView extends LinearLayout {
         subtitleView.setGravity(Gravity.START | Gravity.TOP);
         subtitleView.setEllipsize(TextUtils.TruncateAt.END);
         subtitleView.setSingleLine(true);
-        subtitleView.setShadowLayer(15.0f, 1, 3, 0x22000000);
+//        subtitleView.setShadowLayer(15.0f, 1, 3, 0x22000000);
 
         addView(titleView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         addView(subtitleView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));

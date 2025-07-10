@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 class Gift {
     final ParticlesGeometry.Particle particle;
@@ -22,7 +23,7 @@ class Gift {
 public class GiftsController {
     private static final CartesianCoordinates marginShift = new CartesianCoordinates(0, Adjust.Header.topMargin);
 
-    static GiftsController make(Context context) {
+    static GiftsController make(Context context, int count) {
         ArrayList<Gift> gifts = new ArrayList<Gift>();
         double[][] giftData = {
                 {342.5, 133.5},
@@ -32,6 +33,8 @@ public class GiftsController {
                 {863.5, 223.5},
                 {746.5, 141.5},
         };
+        count = Math.min(count, giftData.length);
+        giftData = Arrays.copyOf(giftData, count);
 
         final double cx = 540;
         final double cy = 260;
@@ -95,6 +98,9 @@ public class GiftsController {
     }
 
     public void displayGift(View giftView, int index) {
+        if (index < 0 || index >= gifts.size()) {
+            return;
+        }
         View baseView = gifts.get(index).viewOnSpring.view;
         ((FrameLayout) baseView).addView(giftView);
     }

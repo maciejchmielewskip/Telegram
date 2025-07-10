@@ -10,6 +10,7 @@ class ViewOnSpring {
     private SpringAnimation springAnimX;
     private SpringAnimation springAnimY;
     private float size;
+    private boolean didTeleportInitially = false;
 
     ViewOnSpring(View view, float size, float damping, float stiffness) {
         this.view = view;
@@ -38,9 +39,15 @@ class ViewOnSpring {
     }
 
     void moveSpring(CartesianCoordinates position) {
-        springAnimX.getSpring().setFinalPosition(position.x - (size / 2));
-        springAnimY.getSpring().setFinalPosition(position.y - (size / 2));
-        if (!springAnimX.isRunning()) springAnimX.start();
-        if (!springAnimY.isRunning()) springAnimY.start();
+        if (!didTeleportInitially) {
+            didTeleportInitially = true;
+            view.setX(position.x);
+            view.setY(position.y);
+        } else {
+            springAnimX.getSpring().setFinalPosition(position.x - (size / 2));
+            springAnimY.getSpring().setFinalPosition(position.y - (size / 2));
+            if (!springAnimX.isRunning()) springAnimX.start();
+            if (!springAnimY.isRunning()) springAnimY.start();
+        }
     }
 }

@@ -221,6 +221,10 @@ public class GiftView extends View implements NotificationCenter.NotificationCen
     public final HashSet<Long> giftIds = new HashSet<>();
     public int maxCount;
 
+    public int giftsCount() {
+        return list.getCount();
+    }
+
     public void update() {
         if (!MessagesController.getInstance(currentAccount).enableGiftsInProfile) {
             return;

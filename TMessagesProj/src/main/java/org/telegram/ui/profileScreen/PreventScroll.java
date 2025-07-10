@@ -13,6 +13,6 @@ public class PreventScroll extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
+        return !(ev.getY() < 120);
     }
 }

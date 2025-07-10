@@ -5492,7 +5492,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 peerColor == null ? defaultHeaderColor : peerColor.getColor3(Theme.isCurrentThemeDark()),
                 R.drawable.ic_ab_back,
                 R.drawable.ic_ab_other,
-                backgroundColor
+                backgroundColor,
+//                giftsViews.giftViews.get(0).giftsCount()
+                6
         );
         ProfileView profileView = new ProfileView(context, profileViewModel);
 

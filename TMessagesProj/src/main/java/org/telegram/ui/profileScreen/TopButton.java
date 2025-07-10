@@ -12,6 +12,7 @@ import android.widget.ImageView;
 public class TopButton extends FrameLayout {
     private ImageView iconView;
     private ScaleTouchAnimator scaleTouchAnimator;
+    private Runnable tapListener;
 
     public TopButton(Context context, int iconResId) {
         super(context);
@@ -36,7 +37,6 @@ public class TopButton extends FrameLayout {
         LayoutParams lp = new LayoutParams((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics()), (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics()), android.view.Gravity.CENTER);
         iconView.setLayoutParams(lp);
         if (iconResId != 0) iconView.setImageResource(iconResId);
-//        iconView.setScaleType(ImageView.ScaleType.CENTER);
         addView(iconView);
         scaleTouchAnimator = new ScaleTouchAnimator(this);
     }
@@ -54,6 +54,9 @@ public class TopButton extends FrameLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         scaleTouchAnimator.onTouch(event);
+        if (event.getAction() == MotionEvent.ACTION_UP && isPressed()) {
+            handleTap();
+        }
         return super.onTouchEvent(event);
     }
     public void setIcon(int resId) {
@@ -61,5 +64,13 @@ public class TopButton extends FrameLayout {
     }
     public ImageView getIconView() {
         return iconView;
+    }
+    public void setOnTapListener(Runnable listener) {
+        tapListener = listener;
+    }
+    public void handleTap() {
+        if (tapListener != null) {
+            tapListener.run();
+        }
     }
 }

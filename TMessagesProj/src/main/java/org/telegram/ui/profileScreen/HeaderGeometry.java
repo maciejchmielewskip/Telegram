@@ -1,5 +1,7 @@
 package org.telegram.ui.profileScreen;
 
+import android.util.Log;
+
 class HeaderGeometry {
     CartesianCoordinates size;
     Float scrollDownOffset;

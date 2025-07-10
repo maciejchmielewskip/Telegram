@@ -10,9 +10,10 @@ public class ProfileViewModel {
     final int backButtonDrawable;
     final int moreButtonDrawable;
     final int backgroundColor;
+    final int giftsCount;
 
 
-    public ProfileViewModel(String title, String subtitle, int centerColor, int middleColor, int edgeColor, int stampColor, int backButtonDrawable, int moreButtonDrawable, int backgroundColor) {
+    public ProfileViewModel(String title, String subtitle, int centerColor, int middleColor, int edgeColor, int stampColor, int backButtonDrawable, int moreButtonDrawable, int backgroundColor, int giftsCount) {
         this.title = title;
         this.subtitle = subtitle;
         this.centerColor = centerColor;
@@ -22,5 +23,6 @@ public class ProfileViewModel {
         this.backButtonDrawable = backButtonDrawable;
         this.moreButtonDrawable = moreButtonDrawable;
         this.backgroundColor = backgroundColor;
+        this.giftsCount = giftsCount;
     }
 }
