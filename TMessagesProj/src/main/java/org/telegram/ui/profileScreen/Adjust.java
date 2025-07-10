@@ -1,6 +1,8 @@
 package org.telegram.ui.profileScreen;
 
 
+import static org.telegram.messenger.AndroidUtilities.dp;
+
 public class Adjust {
     public static class Header {
         public static int height = 805;
@@ -15,7 +17,7 @@ public class Adjust {
     }
 
     public static class Gift {
-        public static int size = 100;
+        public static int size = dp(45);
     }
 
     public static class Avatar {
