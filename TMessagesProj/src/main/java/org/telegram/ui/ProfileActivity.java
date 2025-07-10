@@ -5490,11 +5490,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 color2,
                 color1,
                 peerColor == null ? defaultHeaderColor : peerColor.getColor3(Theme.isCurrentThemeDark()),
+//                Color.RED,
                 R.drawable.ic_ab_back,
                 R.drawable.ic_ab_other,
                 backgroundColor,
-//                giftsViews.giftViews.get(0).giftsCount()
-                6
+                giftsViews.giftViews.get(0).giftsCount()
+//                6
         );
         ProfileView profileView = new ProfileView(context, profileViewModel);
 
@@ -5545,11 +5546,17 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable emoji = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(profileView, false, dp(20), AnimatedEmojiDrawable.CACHE_TYPE_ALERT_PREVIEW_STATIC);
         long emojiId = userId == 0 ? ChatObject.getProfileEmojiId(chat) : UserObject.getProfileEmojiId(user);
         emoji.set(emojiId, false);
-//        emoji.setColor(peerColor.getColor2(false));
         emoji.setColor(Color.RED);
-        Bitmap patternBitmap = getBitmapFromDrawable(emoji.getDrawable(), 100, 100);
-        profileView.stampsController.updateStampBitmap(patternBitmap);
-//        emoji.getDrawable()
+        emoji.setBounds(0, 0, 100, 100);
+//        Bitmap patternBitmap = getBitmapFromDrawable(emoji.getDrawable(), 100, 100);
+//        patternBitmap = getBitmapFromDrawable(emoji.getDrawable(), 100, 100);
+        profileView.stampsController.updateStampDrawable(emoji.getDrawable());
+
+//        Bitmap whiteBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(whiteBitmap);
+//        canvas.drawColor(0xFFFFFFFF);
+//        profileView.stampsController.updateStampBitmap(whiteBitmap);
+
 
 
         TLObject entity = userId == 0 ? chat : user;

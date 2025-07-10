@@ -2,6 +2,7 @@ package org.telegram.ui.profileScreen;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -111,6 +112,12 @@ public class StampsController {
     public void updateStampBitmap(Bitmap bitmap) {
         for (Stamp stamp : stamps) {
             ((ImageView)stamp.viewOnSpring.view).setImageBitmap(bitmap);
+        }
+    }
+
+    public void updateStampDrawable(Drawable drawable) {
+        for (Stamp stamp : stamps) {
+            ((ImageView)stamp.viewOnSpring.view).setImageDrawable(drawable);
         }
     }
 }
