@@ -131,7 +131,7 @@ public class ProfileView extends ScrollView {
         for (Stamp stamp : stampsController.stamps) {
             particlesView.addView(stamp.viewOnSpring.view);
         }
-        giftsController = GiftsController.make(getContext(), viewModel.giftsCount);
+        giftsController = GiftsController.make(getContext());
         for (Gift gift : giftsController.gifts) {
             particlesView.addView(gift.viewOnSpring.view);
         }
@@ -153,6 +153,10 @@ public class ProfileView extends ScrollView {
         moreLayoutParams.gravity = Gravity.RIGHT;
         more.setLayoutParams(moreLayoutParams);
         rootFrame.addView(more);
+    }
+
+    public void updateGiftsCount(int count) {
+        avatarMetaball.updateGiftsCount(count);
     }
 
     public void pushContent(View view) {

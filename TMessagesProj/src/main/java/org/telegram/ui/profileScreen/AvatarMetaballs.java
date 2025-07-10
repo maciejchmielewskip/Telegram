@@ -18,6 +18,7 @@ class AvatarMetaball {
     private MetaballBlob.Ball avatarBall = new MetaballBlob.Ball(0, 0 + Adjust.Avatar.size / 2, Adjust.Avatar.size / 2);
     private MetaballBlob.Ball edgeBall = new MetaballBlob.Ball(0, -Adjust.Header.edgeBallSize, Adjust.Header.edgeBallSize);
     private List<Notch> nothes = new ArrayList<>();
+    private final List<MetaballBlob.Ball> giftsBalls = new ArrayList<>();
 
     public AvatarMetaball(Context context) {
         notchesBlob.balls.add(avatarBall);
@@ -58,7 +59,7 @@ class AvatarMetaball {
         giftsBlob.balls.clear();
         giftsBlob.balls.add(avatarBall);
         for (Gift gift : gifts) {
-            giftsBlob.balls.add(new MetaballBlob.Ball(
+            giftsBalls.add(new MetaballBlob.Ball(
                     gift.currentPosition.x,
                     gift.currentPosition.y - Adjust.Header.topMargin,
                     Adjust.Gift.size / 3.5f
@@ -96,5 +97,11 @@ class AvatarMetaball {
             }
         }
         return unionPath;
+    }
+
+    public void updateGiftsCount(int count) {
+        giftsBlob.balls.clear();
+        giftsBlob.balls.add(avatarBall);
+        giftsBlob.balls.addAll(giftsBalls.subList(0, count));
     }
 }

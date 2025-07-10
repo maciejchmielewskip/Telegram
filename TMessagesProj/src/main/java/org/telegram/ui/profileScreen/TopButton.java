@@ -54,7 +54,7 @@ public class TopButton extends FrameLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         scaleTouchAnimator.onTouch(event);
-        if (event.getAction() == MotionEvent.ACTION_UP && isPressed()) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
             handleTap();
         }
         return super.onTouchEvent(event);

@@ -23,7 +23,7 @@ class Gift {
 public class GiftsController {
     private static final CartesianCoordinates marginShift = new CartesianCoordinates(0, Adjust.Header.topMargin);
 
-    static GiftsController make(Context context, int count) {
+    static GiftsController make(Context context) {
         ArrayList<Gift> gifts = new ArrayList<Gift>();
         double[][] giftData = {
                 {342.5, 133.5},
@@ -33,8 +33,6 @@ public class GiftsController {
                 {863.5, 223.5},
                 {746.5, 141.5},
         };
-        count = Math.min(count, giftData.length);
-        giftData = Arrays.copyOf(giftData, count);
 
         final double cx = 540;
         final double cy = 260;

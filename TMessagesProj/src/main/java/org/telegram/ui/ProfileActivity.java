@@ -385,6 +385,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private ProfileStoriesView storyView;
     public GiftsViews giftsViews;
     public ProfileGiftsView giftsView;
+    private ProfileView profileView;
 
     private View scrimView = null;
     private Paint scrimPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
@@ -5493,11 +5494,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 //                Color.RED,
                 R.drawable.ic_ab_back,
                 R.drawable.ic_ab_other,
-                backgroundColor,
-                giftsViews.giftViews.get(0).giftsCount()
-//                6
+                backgroundColor
         );
-        ProfileView profileView = new ProfileView(context, profileViewModel);
+        profileView = new ProfileView(context, profileViewModel);
+        profileView.updateGiftsCount(giftsViews.giftViews.get(0).giftsCount());
 
 
 
@@ -5589,20 +5589,30 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 
 
-
+//        profileView.back.setOnTapListener(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.d("QQQ", "DDD");
+//            }
+//        });
+        profileView.more.setOnTapListener(new Runnable() {
+            @Override
+            public void run() {
+                otherItem.toggleSubMenu(null, profileView.more);
+            }
+        });
+        profileView.back.setOnTapListener(new Runnable() {
+            @Override
+            public void run() {
+                onBackPressed();
+            }
+        });
 
 
         return profileView;
 //        return fragmentView;
     }
 
-    public static Bitmap getBitmapFromDrawable(Drawable drawable, int width, int height) {
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, width, height);
-        drawable.draw(canvas);
-        return bitmap;
-    }
 
     public interface AvatarBitmapHandler {
         void onLoaded(ImageReceiver.BitmapHolder bitmap);
@@ -8306,6 +8316,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
             }
         } else if (id == NotificationCenter.starUserGiftsLoaded) {
+            profileView.updateGiftsCount(giftsViews.giftViews.get(0).giftsCount());
             final long dialogId = (long) args[0];
             if (dialogId == getDialogId() && !isSettings()) {
                 if (sharedMediaRow < 0) {

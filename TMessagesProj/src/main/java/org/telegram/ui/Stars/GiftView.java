@@ -222,7 +222,7 @@ public class GiftView extends View implements NotificationCenter.NotificationCen
     public int maxCount;
 
     public int giftsCount() {
-        return list.getCount();
+        return StarsController.getInstance(currentAccount).getProfileGiftsList(dialogId).getTotalCount();
     }
 
     public void update() {
