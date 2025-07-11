@@ -120,5 +120,11 @@ public class StampsController {
             ((ImageView)stamp.viewOnSpring.view).setImageDrawable(drawable);
         }
     }
+
+    public void updateStampResource(int resource) {
+        for (Stamp stamp : stamps) {
+            ((ImageView)stamp.viewOnSpring.view).setImageResource(resource);
+        }
+    }
 }
 

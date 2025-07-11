@@ -5543,19 +5543,20 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 ////        String asd = "aasd";
 
 
-        AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable emoji = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(profileView, false, dp(20), AnimatedEmojiDrawable.CACHE_TYPE_ALERT_PREVIEW_STATIC);
-        long emojiId = userId == 0 ? ChatObject.getProfileEmojiId(chat) : UserObject.getProfileEmojiId(user);
-        emoji.set(emojiId, false);
-        emoji.setColor(Color.RED);
-        emoji.setBounds(0, 0, 100, 100);
+//        AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable emoji = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(profileView, false, dp(20), AnimatedEmojiDrawable.CACHE_TYPE_ALERT_PREVIEW_STATIC);
+//        long emojiId = userId == 0 ? ChatObject.getProfileEmojiId(chat) : UserObject.getProfileEmojiId(user);
+//        emoji.set(emojiId, false);
+//        emoji.setColor(Color.RED);
+//        emoji.setBounds(0, 0, 100, 100);
 //        Bitmap patternBitmap = getBitmapFromDrawable(emoji.getDrawable(), 100, 100);
 //        patternBitmap = getBitmapFromDrawable(emoji.getDrawable(), 100, 100);
-        profileView.stampsController.updateStampDrawable(emoji.getDrawable());
+//        profileView.stampsController.updateStampDrawable(emoji.getDrawable());
 
 //        Bitmap whiteBitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
 //        Canvas canvas = new Canvas(whiteBitmap);
 //        canvas.drawColor(0xFFFFFFFF);
 //        profileView.stampsController.updateStampBitmap(whiteBitmap);
+        profileView.stampsController.updateStampResource(R.drawable.diamond_stamp);
 
 
 
